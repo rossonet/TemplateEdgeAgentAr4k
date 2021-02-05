@@ -1,17 +1,17 @@
 description = "Template progetto con libreria EdgeAgentAr4k"
 group = 'org.ar4k.agent.template'
-version = '0.0.1'
+version = '0.0.3'
 
 ext {
 	sourceCompatibility = 1.8
 	springStatemachineVersion = '2.2.0.RELEASE'
-	springBootVersion = '2.3.2.RELEASE'
-	ar4kVersion = '0.1'
+	springBootVersion = '2.4.2.RELEASE'
+	ar4kVersion = '0.9.4'
 }
 
 buildscript {
         ext {
-                springBootVersion = '2.3.2.RELEASE'
+                springBootVersion = '2.4.2'
         }
         repositories {
                 mavenCentral()
@@ -21,28 +21,21 @@ buildscript {
         dependencies {
                 classpath("org.springframework.boot:spring-boot-gradle-plugin:${project.ext.springBootVersion}")
                 classpath "gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:1.5.1"
-		classpath('se.transmode.gradle:gradle-docker:1.2')
+                classpath('se.transmode.gradle:gradle-docker:1.2')
                 classpath "com.diffplug.gradle:goomph:3.18.1"
                 classpath "com.netflix.nebula:gradle-ospackage-plugin:8.4.1"
-		classpath 'de.undercouch:gradle-download-task:3.1.1'
+                classpath 'de.undercouch:gradle-download-task:3.1.1'
                 classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.8'
         }
 }
 
 repositories {
-        mavenCentral()
-        maven { url "https://repo.spring.io/milestone" }
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
-        jcenter()
-        maven { url "https://maven.mangoautomation.net/repository/ias-release/" }
-	maven {url "https://maven.pkg.github.com/rossonet/EdgeAgentAr4k"}
-	maven { url "https://dl.bintray.com/ethereum/maven/" }
-        maven { url "https://nexus.bedatadriven.com/content/groups/public" }
-	maven { url "http://dist.wso2.org/maven2/" }
-	maven { url "https://repo1.maven.org/maven2/" }
-	maven { url "https://maven.wso2.org/nexus/content/repositories/releases/" }
+	mavenCentral()
+	jcenter()
 	maven { url "http://vaadin.com/nexus/content/repositories/vaadin-addons/" }
 	maven { url "https://nexus.pentaho.org/content/groups/omni/" }
+	maven { url "https://maven.mangoautomation.net/repository/ias-release/" }
+	maven { url "http://vaadin.com/nexus/content/repositories/vaadin-addons/" }
 }
 
 apply plugin: 'docker'
@@ -63,6 +56,18 @@ apply plugin: 'base'
 dependencies {
 	compile "net.rossonet:ar4k-core:${project.ext.ar4kVersion}"
 	compile "net.rossonet:ar4k-terminal:${project.ext.ar4kVersion}"
+	//compile "net.rossonet:ar4k-hazelcast:${project.ext.ar4kVersion}"
+	//compile "net.rossonet:ar4k-activemq:${project.ext.ar4kVersion}"
+	//compile "net.rossonet:ar4k-pcap:${project.ext.ar4kVersion}"
+	//compile "net.rossonet:ar4k-ai:${project.ext.ar4kVersion}"
+	//compile "net.rossonet:ar4k-ai-nlp:${project.ext.ar4kVersion}"
+	//compile "net.rossonet:ar4k-kettle:${project.ext.ar4kVersion}"
+	//compile "net.rossonet:ar4k-serial-comm:${project.ext.ar4kVersion}"
+	//compile "net.rossonet:ar4k-video:${project.ext.ar4kVersion}"
+	//compile "net.rossonet:ar4k-seed:${project.ext.ar4kVersion}"
+	//compile "net.rossonet:ar4k-vaadin:${project.ext.ar4kVersion}"
+	//compile "net.rossonet:ar4k-industrial:${project.ext.ar4kVersion}"
+	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
 task eclipseClosedDependencies {}
@@ -72,7 +77,7 @@ task eclipseClosedDependencies_ {}
 bootJar {
 	launchScript()
 	manifest {
-		attributes('Implementation-Title':'Ar4kAgent',
+		attributes('Implementation-Title':'Ar4k Agent Template',
 		'Implementation-Version': "${project.version}")
 	}
 }
@@ -170,7 +175,7 @@ task makeRpm(type: Rpm){
   from('ar4k-agent-druido/build/libs'){
     into '/opt/rossonet'
   }
-  from('rpm/init'){
+  from('dist-dir/init'){
     into '/etc/systemd/system'
   }
   directory('/opt/rossonet/ar4k')
@@ -198,11 +203,19 @@ task makeDebianPackage(type: Deb){
   from('build/libs'){
     into '/opt/rossonet'
   }
-  from('rpm/init'){
+  from('dist-dir/init'){
     into '/etc/systemd/system'
   }
   directory('/opt/rossonet/ar4k')
   link('/opt/rossonet/ar4k-agent.jar',"/opt/rossonet/ar4k-agent-${rootProject.version}.jar")
 }
 
+task cleanGradleCache {
+	group "Cache Workaround"
+	description 'Remove Rossonet artifacts from local Gradle cache'
+	delete "~/.gradle/caches/*/*/net.rossonet"
+	delete "~/.gradle/caches/*/*/descriptors/net.rossonet"
+	delete "~/.gradle/caches/*/*/ar4k-agent"
+	delete "~/.gradle/caches/*/*/descriptors/ar4k-agent"
+}
 

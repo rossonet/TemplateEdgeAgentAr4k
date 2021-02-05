@@ -1,8 +1,10 @@
-# Ar4k Edge Agent by Rossonet
+# Template Edge app Rossonet
 
 ## Reference
 
 [Library Documentation](https://www.rossonet.net/dati/edge-docs/doc-site/)
+
+[Tech blog](https://app.rossonet.net/?page_id=13)
 
 ## Run as a service
 

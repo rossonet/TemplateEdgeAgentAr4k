@@ -12,33 +12,31 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
     */
-package org.ar4k.tests.shellWeb;
+package org.ar4k.qa.tests;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringBootConfiguration;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.util.StringUtils;
 
 @SpringBootConfiguration
-@ComponentScan("org.ar4k.agent")
 public class TestApplicationRunner implements ApplicationRunner {
 
-	private static Logger log = LoggerFactory.getLogger(TestApplicationRunner.class);
+  private static Logger log = LoggerFactory.getLogger(TestApplicationRunner.class);
 
-	String[] args = new String[0];
-	String[] disabledCommands = { "--spring.shell.command.quit.enabled=false" };
-	String[] fullArgs = StringUtils.concatenateStringArrays(args, disabledCommands);
+  String[] args = new String[0];
+  String[] disabledCommands = { "--spring.shell.command.quit.enabled=false" };
+  String[] fullArgs = StringUtils.concatenateStringArrays(args, disabledCommands);
 
-	public TestApplicationRunner() {
-		log.info("Test Application Runner started!");
-	}
-
-	@Override
-	public void run(ApplicationArguments args) throws Exception {
-		log.info("About to do nothing!");
-		// Do nothing...
-	}
+  public TestApplicationRunner() {
+    log.info("Test Application Runner started!");
+  }
+  
+  @Override
+  public void run(ApplicationArguments args) throws Exception {
+    log.info("About to do nothing!");
+    // Do nothing...
+  }
 }
