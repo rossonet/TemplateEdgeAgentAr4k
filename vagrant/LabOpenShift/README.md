@@ -12,7 +12,7 @@ Login on [OpenShift Cloud console](https://cloud.redhat.com/openshift/)
 
 From main page got to **Create cluster**.
 
-![Main page](login.png?raw=true)
+![Main page](login-openshift.png?raw=true)
 
 Select **SandBox** tab and click on **Download pull secret**.
 
