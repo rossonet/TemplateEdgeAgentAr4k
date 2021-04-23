@@ -17,12 +17,7 @@ package org.ar4k.qa.tests;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateEncodingException;
 import java.util.UUID;
-
-import javax.crypto.NoSuchPaddingException;
 
 import org.ar4k.agent.config.EdgeConfig;
 import org.ar4k.agent.core.Homunculus;
@@ -34,7 +29,6 @@ import org.ar4k.agent.spring.EdgeAuthenticationManager;
 import org.ar4k.agent.spring.EdgeUserDetailsService;
 import org.ar4k.agent.tunnels.ssh.client.SshLocalConfig;
 import org.ar4k.gw.studio.tunnels.socket.ssl.SocketFactorySslConfig;
-import org.bouncycastle.cms.CMSException;
 import org.jline.builtins.Commands;
 import org.junit.After;
 import org.junit.Before;
@@ -144,30 +138,6 @@ public class SaveAndLoadConfigurationTests {
 		assertTrue(check.equals(((EdgeConfig) a).author));
 		assertTrue(check.equals(((SocketFactorySslConfig) ((EdgeConfig) a).pots.toArray()[0]).note));
 		assertTrue(check.equals(((SocketFactorySslConfig) ((EdgeConfig) a).pots.toArray()[1]).note));
-	}
-
-	@Test
-	public void saveAndRestoreToFromBase64Crypto() throws CertificateEncodingException, ClassNotFoundException,
-			NoSuchAlgorithmException, NoSuchPaddingException, UnsupportedEncodingException, IOException, CMSException {
-		EdgeConfig c = new EdgeConfig();
-		String check = UUID.randomUUID().toString();
-		c.name = "test salvataggio json";
-		c.author = check;
-		SshLocalConfig s1 = new SshLocalConfig();
-		s1.name = "ssh config";
-		s1.note = check;
-		SshLocalConfig s2 = new SshLocalConfig();
-		s2.name = "stunnel config";
-		s2.note = check;
-		c.pots.add(s1);
-		c.pots.add(s2);
-		// System.out.println("Anima -> " + anima);
-		String baseCrypto = ConfigHelper.toBase64Crypto(c, "my-keystore-alias");
-		System.out.println("CRYPTO " + baseCrypto);
-		ConfigSeed a = ConfigHelper.fromBase64Crypto(baseCrypto, "my-keystore-alias");
-		assertTrue(check.equals(((EdgeConfig) a).author));
-		assertTrue(check.equals(((SshLocalConfig) ((EdgeConfig) a).pots.toArray()[0]).note));
-		assertTrue(check.equals(((SshLocalConfig) ((EdgeConfig) a).pots.toArray()[1]).note));
 	}
 
 }

@@ -24,7 +24,6 @@ import org.ar4k.agent.spring.EdgeAuthenticationManager;
 import org.ar4k.agent.spring.EdgeUserDetailsService;
 import org.jline.builtins.Commands;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestWatcher;
@@ -48,58 +47,59 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Import({ SpringShellAutoConfiguration.class, JLineShellAutoConfiguration.class, Homunculus.class,
-    JCommanderParameterResolverAutoConfiguration.class, LegacyAdapterAutoConfiguration.class,
-    StandardAPIAutoConfiguration.class, StandardCommandsAutoConfiguration.class, Commands.class,
-    FileValueProvider.class, HomunculusStateMachineConfig.class, HomunculusSession.class, EdgeUserDetailsService.class,
-    EdgeAuthenticationManager.class, BCryptPasswordEncoder.class })
+		JCommanderParameterResolverAutoConfiguration.class, LegacyAdapterAutoConfiguration.class,
+		StandardAPIAutoConfiguration.class, StandardCommandsAutoConfiguration.class, Commands.class,
+		FileValueProvider.class, HomunculusStateMachineConfig.class, HomunculusSession.class,
+		EdgeUserDetailsService.class, EdgeAuthenticationManager.class, BCryptPasswordEncoder.class })
 @TestPropertySource(locations = "classpath:application.properties")
 @SpringBootConfiguration
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@Ignore
+//@Ignore
 public class ImplementedServiceTests {
 
-  @Autowired
-  Homunculus homunculus;
+	@Autowired
+	Homunculus homunculus;
 
-  @Before
-  public void setUp() throws Exception {
-    Thread.sleep(3000L);
-    System.out.println(homunculus.getState());
-  }
+	@Before
+	public void setUp() throws Exception {
+		Thread.sleep(3000L);
+		System.out.println(homunculus.getState());
+	}
 
-  @Rule
-  public TestWatcher watcher = new TestWatcher() {
-    @Override
-    protected void starting(Description description) {
-      System.out.println("\n\n\tTEST " + description.getMethodName() + " STARTED\n\n");
-    }
-  };
+	@Rule
+	public TestWatcher watcher = new TestWatcher() {
+		@Override
+		protected void starting(Description description) {
+			System.out.println("\n\n\tTEST " + description.getMethodName() + " STARTED\n\n");
+		}
+	};
 
-  @Test
-  public void putInDataStore() throws InterruptedException {
-    Thread.sleep(2000L);
-    while (homunculus == null || !homunculus.getState().toString().equals("STAMINAL") || !homunculus.dataStoreExists()) {
-      if (homunculus != null && homunculus.getState().toString().equals("INIT")) {
-        homunculus.sendEvent(HomunculusEvents.BOOTSTRAP);
-      }
-      try {
-        System.out.println("STATE A: " + homunculus.getState());
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-      Thread.sleep(2000L);
-    }
-    String stringa = UUID.randomUUID().toString();
-    boolean primo = true;
-    for (int i = 0; i < 10000; i++) {
-      if (primo) {
-        homunculus.setContextData(stringa, UUID.randomUUID().toString());
-        primo = false;
-      } else {
-        homunculus.setContextData(UUID.randomUUID().toString(), UUID.randomUUID().toString());
-      }
-    }
-    System.out.println("STATE B: " + homunculus.getContextData(stringa));
-  }
+	@Test
+	public void putInDataStore() throws InterruptedException {
+		Thread.sleep(2000L);
+		while (homunculus == null || !homunculus.getState().toString().equals("STAMINAL")
+				|| !homunculus.dataStoreExists()) {
+			if (homunculus != null && homunculus.getState().toString().equals("INIT")) {
+				homunculus.sendEvent(HomunculusEvents.BOOTSTRAP);
+			}
+			try {
+				System.out.println("STATE A: " + homunculus.getState());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			Thread.sleep(2000L);
+		}
+		String stringa = UUID.randomUUID().toString();
+		boolean primo = true;
+		for (int i = 0; i < 10000; i++) {
+			if (primo) {
+				homunculus.setContextData(stringa, UUID.randomUUID().toString());
+				primo = false;
+			} else {
+				homunculus.setContextData(UUID.randomUUID().toString(), UUID.randomUUID().toString());
+			}
+		}
+		System.out.println("STATE B: " + homunculus.getContextData(stringa));
+	}
 
 }
