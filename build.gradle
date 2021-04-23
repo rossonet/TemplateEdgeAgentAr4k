@@ -199,6 +199,7 @@ task makeRpm(type: Rpm){
   provides 'ar4k-edge-system'
   from('build/libs'){
     into '/opt/rossonet'
+    fileMode 0755
   }
   from('dist-dir/init'){
     into '/etc/systemd/system'
@@ -207,6 +208,7 @@ task makeRpm(type: Rpm){
   link("/opt/rossonet/${rootProject.name}.jar","/opt/rossonet/${rootProject.name}-${rootProject.version}.jar")
   link("/opt/rossonet/${rootProject.name}","/opt/rossonet/${rootProject.name}-${rootProject.version}.jar")
   link("/opt/rossonet/agent.jar","/opt/rossonet/${rootProject.name}-${rootProject.version}.jar")
+  link("/usr/bin/${rootProject.name}","/opt/rossonet/${rootProject.name}-${rootProject.version}.jar")
 }
 
 task makeDebianPackage(type: Deb){
@@ -230,6 +232,7 @@ task makeDebianPackage(type: Deb){
   provides 'ar4k-edge-system'
   from('build/libs'){
     into '/opt/rossonet'
+    fileMode 0755
   }
   from('dist-dir/init'){
     into '/etc/systemd/system'
@@ -237,6 +240,8 @@ task makeDebianPackage(type: Deb){
   directory('/opt/rossonet')
   link("/opt/rossonet/${rootProject.ext.debianName}.jar","/opt/rossonet/${rootProject.ext.debianName}-${rootProject.version}.jar")
   link("/opt/rossonet/${rootProject.ext.debianName}","/opt/rossonet/${rootProject.ext.debianName}-${rootProject.version}.jar")
+  link("/opt/rossonet/agent.jar","/opt/rossonet/${rootProject.ext.debianName}-${rootProject.version}.jar")
+  link("/usr/bin/${rootProject.ext.debianName}","/opt/rossonet/${rootProject.ext.debianName}-${rootProject.version}.jar")
 }
 
 task cleanGradleCache {
