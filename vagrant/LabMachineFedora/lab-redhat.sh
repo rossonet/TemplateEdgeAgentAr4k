@@ -27,18 +27,18 @@ asciinema rec -i 2.5 /home/vagrant/asciinema/clone.json -c "git clone https://gi
 #echo "configure project for Eclipse"
 #asciinema rec -i 2.5 /home/vagrant/asciinema/eclipse.json -c "cd /home/vagrant/TemplateEdgeAgentAr4k && ./gradlew clean cleanEclipse eclipse"
 echo "build fat jar"
-asciinema rec -i 2.5 /home/vagrant/asciinema/make-jars.json -c "cd /home/vagrant/TemplateEdgeAgentAr4k && ./gradlew ar4kBootJarDruido"
+asciinema rec -i 2.5 /home/vagrant/asciinema/make-jars.json -c "cd /home/vagrant/TemplateEdgeAgentAr4k && ./gradlew bootJar"
 echo "build docker container"
-asciinema rec -i 2.5 /home/vagrant/asciinema/make-docker.json -c "cd /home/vagrant/TemplateEdgeAgentAr4k && ./gradlew ar4kDockerContainerDruido"
+asciinema rec -i 2.5 /home/vagrant/asciinema/make-docker.json -c "cd /home/vagrant/TemplateEdgeAgentAr4k && ./gradlew buildDocker"
 echo "build project rpm"
-asciinema rec -i 2.5 /home/vagrant/asciinema/make-rpm.json -c "cd /home/vagrant/TemplateEdgeAgentAr4k && ./gradlew makeRpmDruido"
+asciinema rec -i 2.5 /home/vagrant/asciinema/make-rpm.json -c "cd /home/vagrant/TemplateEdgeAgentAr4k && ./gradlew makeRpm"
 echo "install rpm on system"
-asciinema rec -i 2.5 /home/vagrant/asciinema/install-rpm.json -c "cd /home/vagrant/TemplateEdgeAgentAr4k && sudo dnf localinstall build/distributions/ar4k-agent-druido-*.noarch.rpm -y"
+asciinema rec -i 2.5 /home/vagrant/asciinema/install-rpm.json -c "cd /home/vagrant/TemplateEdgeAgentAr4k && sudo dnf localinstall build/distributions/TemplateEdgeAgentAr4k-*.noarch.rpm -y"
 echo "restart and enable agent"
-asciinema rec -i 2.5 /home/vagrant/asciinema/enable-service.json -c "sudo systemctl restart ar4k-druido && sudo systemctl enable ar4k-druido"
+asciinema rec -i 2.5 /home/vagrant/asciinema/enable-service.json -c "sudo systemctl restart ar4k-agent && sudo systemctl enable ar4k-agent"
 
 echo "link for git import in Eclipse"
 mkdir /home/vagrant/git
-ln -s /home/vagrant/EdgeAgentAr4k /home/vagrant/git
+ln -s /home/vagrant/TemplateEdgeAgentAr4k /home/vagrant/git
 echo "clean permission"
 sudo chown -R vagrant:vagrant /home/vagrant

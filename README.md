@@ -1,5 +1,7 @@
 [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/rossonet/TemplateEdgeAgentAr4k)
 
+[![Test on master branch](https://github.com/rossonet/TemplateEdgeAgentAr4k/actions/workflows/test-on-master.yml/badge.svg)](https://github.com/rossonet/TemplateEdgeAgentAr4k/actions/workflows/test-on-master.yml)
+
 # Template Edge app Rossonet
 
 ## Reference
