@@ -238,10 +238,10 @@ task makeDebianPackage(type: Deb){
     into '/etc/systemd/system'
   }
   directory('/opt/rossonet')
-  link("/opt/rossonet/${rootProject.ext.debianName}.jar","/opt/rossonet/${rootProject.ext.debianName}-${rootProject.version}.jar")
-  link("/opt/rossonet/${rootProject.ext.debianName}","/opt/rossonet/${rootProject.ext.debianName}-${rootProject.version}.jar")
-  link("/opt/rossonet/agent.jar","/opt/rossonet/${rootProject.ext.debianName}-${rootProject.version}.jar")
-  link("/usr/bin/${rootProject.ext.debianName}","/opt/rossonet/${rootProject.ext.debianName}-${rootProject.version}.jar")
+  link("/opt/rossonet/${rootProject.ext.debianName}.jar","/opt/rossonet/${rootProject.name}-${rootProject.version}.jar")
+  link("/opt/rossonet/${rootProject.ext.debianName}","/opt/rossonet/${rootProject.name}-${rootProject.version}.jar")
+  link("/opt/rossonet/agent.jar","/opt/rossonet/${rootProject.name}-${rootProject.version}.jar")
+  link("/usr/bin/${rootProject.ext.debianName}","/opt/rossonet/${rootProject.name}-${rootProject.version}.jar")
 }
 
 task cleanGradleCache {
