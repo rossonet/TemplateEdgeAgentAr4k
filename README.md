@@ -1,5 +1,6 @@
 [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/rossonet/TemplateEdgeAgentAr4k)
 [![Test on master branch](https://github.com/rossonet/TemplateEdgeAgentAr4k/actions/workflows/test-on-master.yml/badge.svg)](https://github.com/rossonet/TemplateEdgeAgentAr4k/actions/workflows/test-on-master.yml)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frossonet%2FTemplateEdgeAgentAr4k.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Frossonet%2FTemplateEdgeAgentAr4k?ref=badge_shield)
 
 # Template Edge app Rossonet
 
@@ -108,3 +109,7 @@ docker run -ti --rm ar4k-agent:latest
 
 [https://www.rossonet.net](https://www.rossonet.net)
 
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frossonet%2FTemplateEdgeAgentAr4k.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Frossonet%2FTemplateEdgeAgentAr4k?ref=badge_large)
