@@ -87,7 +87,7 @@ dependencies {
 	//compile "net.rossonet:ar4k-vaadin:${project.ext.ar4kVersion}"
 	//compile "net.rossonet:ar4k-industrial:${project.ext.ar4kVersion}"
 	testCompile('org.springframework.boot:spring-boot-starter-test')
-	testCompile group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '5.7.1'
+	testCompile group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '5.7.2'
 }
 
 task eclipseClosedDependencies {}
