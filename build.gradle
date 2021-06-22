@@ -1,0 +1,273 @@
+buildscript {
+        ext {
+                springBootVersion = '2.4.2'
+        }
+        repositories {
+                mavenCentral()
+		jcenter()
+                maven { url "https://plugins.gradle.org/m2/" }
+        }
+        dependencies {
+                classpath("org.springframework.boot:spring-boot-gradle-plugin:${project.ext.springBootVersion}")
+                classpath "gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:1.5.1"
+                classpath('se.transmode.gradle:gradle-docker:1.2')
+                classpath "com.diffplug.gradle:goomph:3.18.1"
+                classpath "com.netflix.nebula:gradle-ospackage-plugin:8.4.1"
+                classpath 'de.undercouch:gradle-download-task:3.1.1'
+                classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.8'
+        }
+}
+
+/*
+plugins {
+	id 'com.vaadin' version '0.14.6.0'
+}
+
+vaadin {
+        optimizeBundle = true
+        pnpmEnable = true
+        productionMode = true
+}
+
+bootRun.configure {
+	mustRunAfter vaadinPrepareFrontend
+    mustRunAfter vaadinBuildFrontend
+}
+
+*/
+
+description = "Template progetto con libreria EdgeAgentAr4k"
+group = 'org.ar4k.agent.template'
+version = '0.0.4'
+
+ext {
+	sourceCompatibility = 1.8
+	springStatemachineVersion = '2.2.0.RELEASE'
+	springBootVersion = '2.4.2.RELEASE'
+	ar4kVersion = '0.9.4'
+	debianName = 'ar4k-agent'
+}
+
+repositories {
+	mavenCentral()
+	jcenter()
+	maven { url "http://vaadin.com/nexus/content/repositories/vaadin-addons/" }
+	maven { url "https://nexus.pentaho.org/content/groups/omni/" }
+	maven { url "https://maven.mangoautomation.net/repository/ias-release/" }
+	maven { url "http://vaadin.com/nexus/content/repositories/vaadin-addons/" }
+}
+
+apply plugin: 'docker'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'maven'
+apply plugin: "com.gorylenko.gradle-git-properties"
+apply plugin: 'com.diffplug.gradle.oomph.ide'
+apply plugin: 'jacoco'
+apply plugin: 'base'
+apply plugin: "nebula.rpm"
+apply plugin: 'nebula.deb'
+apply plugin: "maven-publish"
+apply plugin: 'base'
+
+dependencies {
+	compile "net.rossonet:ar4k-core:${project.ext.ar4kVersion}"
+	compile "net.rossonet:ar4k-terminal:${project.ext.ar4kVersion}"
+	//compile "net.rossonet:ar4k-hazelcast:${project.ext.ar4kVersion}"
+	//compile "net.rossonet:ar4k-activemq:${project.ext.ar4kVersion}"
+	//compile "net.rossonet:ar4k-pcap:${project.ext.ar4kVersion}"
+	//compile "net.rossonet:ar4k-ai:${project.ext.ar4kVersion}"
+	//compile "net.rossonet:ar4k-ai-nlp:${project.ext.ar4kVersion}"
+	//compile "net.rossonet:ar4k-kettle:${project.ext.ar4kVersion}"
+	//compile "net.rossonet:ar4k-serial-comm:${project.ext.ar4kVersion}"
+	//compile "net.rossonet:ar4k-video:${project.ext.ar4kVersion}"
+	//compile "net.rossonet:ar4k-seed:${project.ext.ar4kVersion}"
+	//compile "net.rossonet:ar4k-vaadin:${project.ext.ar4kVersion}"
+	//compile "net.rossonet:ar4k-industrial:${project.ext.ar4kVersion}"
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	testCompile group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '5.7.1'
+}
+
+task eclipseClosedDependencies {}
+
+task eclipseClosedDependencies_ {}
+
+eclipse {
+	classpath {
+	downloadJavadoc = true
+	downloadSources = true
+	}
+}
+
+bootJar {
+	launchScript()
+	manifest {
+		attributes('Implementation-Title':"${project.name}",
+		'Implementation-Version': "${project.version}")
+	}
+}
+
+task buildDocker(type: Docker, dependsOn: bootJar) {
+	applicationName = 'ar4k-agent'
+  	group "Operating System Build"
+  	description 'Builds the agent in docker format'
+	dockerfile = file('Dockerfile.gradle')
+	doFirst {
+		copy {
+			from jar
+			into "${stageDir}/target"
+		}
+	}
+}
+
+bootJar.doLast { task ->
+	ant.checksum file: task.archivePath
+}
+
+task view { doLast { println "Working on project ${project.name} [ ${project.description} ]" } }
+
+configurations.all {
+//	exclude group:"org.slf4j", module: "slf4j-log4j12"
+//	exclude group:"com.vaadin.external.google", module: "android-json"
+}
+
+jar { enabled = true }
+
+jar.doLast { task ->
+	ant.checksum file: task.archivePath
+}
+
+gitProperties {
+	failOnNoGitDirectory = false
+	customProperty 'ar4kComponent', "${project.name}"
+	customProperty 'ar4kVersion', "${version}"
+	dateFormat = "yyyy-MM-dd HH:mm:ssZ"
+	dateFormatTimeZone = 'GMT'
+}
+
+task endBootJar {
+	doLast{ println ("You can find the fat jar of ${project.name} in ${jar.archivePath}") }
+}
+
+javadoc{
+	destinationDir = file("${project.buildDir}/docs/javadoc/${project.name}/")
+	failOnError=false
+}
+
+task theiaIdeBackend(type: Exec) {
+        workingDir "./"
+        commandLine 'docker', 'run', '--init', '-p', '3000:3000', '-d', '-v', "${projectDir}:/home/project:cached", 'rossonet/theia-ide:latest'
+}
+
+task theiaIdeBackendNoCached(type: Exec) {
+        workingDir "./"
+        commandLine 'docker', 'run', '--init', '-p', '3000:3000', '-d', '-v', "${projectDir}:/home/project", 'rossonet/theia-ide:latest'
+}
+
+task theiaIdeBackendNoVolume(type: Exec) {
+        workingDir "./"
+        commandLine 'docker', 'run', '--init', '-p', '3000:3000', '-d', '--name', "docker-ide-${project.name}", 'rossonet/theia-ide:latest'
+}
+
+task theiaIdeBackendCopy(type: Exec) {
+	theiaIdeBackendCopy.dependsOn("theiaIdeBackendNoVolume")
+        workingDir "./"
+        commandLine 'docker', 'cp', '.', "docker-ide-${project.name}:/home/project/"
+}
+
+task theiaIdeBackendStart(type: Exec) {
+  	description 'Run Theia IDE container with docker'
+	theiaIdeBackendStart.dependsOn("theiaIdeBackendCopy")
+        group "Theia IDE on Docker Container"
+        workingDir "./"
+        commandLine 'docker', 'exec', '-u', 'root', "docker-ide-${project.name}", '/bin/chown', '-R', 'theia:theia', '/home/project'
+}
+
+task printTheiaIdeBackendDockerCommand(type: Exec) {
+        workingDir "./"
+        commandLine 'echo', 'docker', 'run', '--init', '-p', '3000:3000', '-d', '--name', "docker-ide-${project.name}", 'rossonet/theia-ide:latest'
+}
+
+task theiaIdeLocalBrowser(type: Exec) {
+        group "Theia IDE on Docker Container"
+  	description 'Open browser to local Theia IDE'
+        workingDir "./"
+        commandLine 'xdg-open', 'http://localhost:3000'
+}
+
+task makeRpm(type: Rpm){
+  group "Operating System Build"
+  makeRpm.dependsOn("bootJar")
+  requires('java-1.8.0-openjdk')
+  requires('telnet')
+  requires('bash')
+  requires('wget')
+  description 'Builds the agent in rpm format'
+  packageName "${project.name}"
+  version "${project.version}"
+  release "1"
+  user 'root'
+  os 'LINUX'
+  url 'https://www.rossonet.net'
+  summary 'Ar4k EdgeAgent distribution'
+  packageDescription 'Agent of Edge System Rossonet'
+  license 'AGPL3'
+  provides 'ar4k-edge-system'
+  from('build/libs'){
+    into '/opt/rossonet'
+    fileMode 0755
+  }
+  from('dist-dir/init'){
+    into '/etc/systemd/system'
+  }
+  directory('/opt/rossonet/ar4k')
+  link("/opt/rossonet/${project.name}.jar","/opt/rossonet/${project.name}-${project.version}.jar")
+  link("/opt/rossonet/${project.name}","/opt/rossonet/${project.name}-${project.version}.jar")
+  link("/opt/rossonet/agent.jar","/opt/rossonet/${project.name}-${project.version}.jar")
+  link("/usr/bin/${project.name}","/opt/rossonet/${project.name}-${project.version}.jar")
+}
+
+task makeDebianPackage(type: Deb){
+  group "Operating System Build"
+  makeDebianPackage.dependsOn("bootJar")
+  requires('default-jdk')
+  requires('telnet')
+  requires('xterm')
+  requires('wget')
+  group "Operating System Build"
+  description 'Builds the agent in deb package format'
+  packageName "${project.ext.debianName}"
+  version "${project.version}"
+  release "1"
+  user 'root'
+  os 'LINUX'
+  url 'https://www.rossonet.com'
+  summary 'Ar4k EdgeAgent distribution'
+  packageDescription 'Agent of Edge System Rossonet'
+  license 'AGPL3'
+  provides 'ar4k-edge-system'
+  from('build/libs'){
+    into '/opt/rossonet'
+    fileMode 0755
+  }
+  from('dist-dir/init'){
+    into '/etc/systemd/system'
+  }
+  directory('/opt/rossonet')
+  link("/opt/rossonet/${project.ext.debianName}.jar","/opt/rossonet/${project.name}-${project.version}.jar")
+  link("/opt/rossonet/${project.ext.debianName}","/opt/rossonet/${project.name}-${project.version}.jar")
+  link("/opt/rossonet/agent.jar","/opt/rossonet/${project.name}-${project.version}.jar")
+  link("/usr/bin/${project.ext.debianName}","/opt/rossonet/${project.name}-${project.version}.jar")
+}
+
+task cleanGradleCache {
+	group "Cache Workaround"
+	description 'Remove Rossonet artifacts from local Gradle cache'
+	delete "~/.gradle/caches/*/*/net.rossonet"
+	delete "~/.gradle/caches/*/*/descriptors/net.rossonet"
+	delete "~/.gradle/caches/*/*/ar4k-agent"
+	delete "~/.gradle/caches/*/*/descriptors/ar4k-agent"
+}
+
