@@ -18,7 +18,6 @@ import org.ar4k.agent.core.Homunculus;
 import org.ar4k.agent.core.data.DataAddress;
 import org.ar4k.agent.core.interfaces.ServiceConfig;
 import org.ar4k.agent.exception.ServiceWatchDogException;
-import org.json.JSONObject;
 
 /*
  * @author Andrea Ambrosini Rossonet s.c.a r.l. andrea.ambrosini@rossonet.com
@@ -86,9 +85,10 @@ public class SocketFactoryComponent extends AbstractSocketFactoryComponent {
 
   }
 
-  @Override
-  public JSONObject getDescriptionJson() {
-    // Auto-generated method stub
-    return null;
-  }
+@Override
+public String getServiceName() {
+	// TODO Auto-generated method stub
+	return null;
+}
+
 }

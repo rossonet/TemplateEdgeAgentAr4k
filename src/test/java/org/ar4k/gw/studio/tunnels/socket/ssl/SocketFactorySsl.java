@@ -20,7 +20,6 @@ import org.ar4k.agent.core.interfaces.ServiceConfig;
 import org.ar4k.agent.exception.ServiceWatchDogException;
 import org.ar4k.gw.studio.tunnels.socket.AbstractSocketFactoryComponent;
 import org.ar4k.gw.studio.tunnels.socket.AbstractSocketFactoryConfig;
-import org.json.JSONObject;
 
 /*
  * @author Andrea Ambrosini Rossonet s.c.a r.l. andrea.ambrosini@rossonet.com
@@ -89,9 +88,10 @@ public class SocketFactorySsl extends AbstractSocketFactoryComponent {
 
   }
 
-  @Override
-  public JSONObject getDescriptionJson() {
-    // Auto-generated method stub
-    return null;
-  }
+@Override
+public String getServiceName() {
+	// TODO Auto-generated method stub
+	return null;
+}
+
 }
