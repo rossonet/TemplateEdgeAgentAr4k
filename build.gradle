@@ -38,13 +38,13 @@ bootRun.configure {
 
 description = "Template progetto con libreria EdgeAgentAr4k"
 group = 'org.ar4k.agent.template'
-version = '0.0.4'
+version = '0.0.5'
 
 ext {
 	sourceCompatibility = 1.8
 	springStatemachineVersion = '2.2.0.RELEASE'
 	springBootVersion = '2.4.2.RELEASE'
-	ar4kVersion = '0.9.4'
+	ar4kVersion = '0.9.1000'
 	debianName = 'ar4k-agent'
 }
 
