@@ -73,6 +73,11 @@ apply plugin: "maven-publish"
 apply plugin: 'base'
 
 dependencies {
+	compile ('com.beust:jcommander'){
+		version {
+		strictly '1.48'
+        	}
+	}
 	compile "net.rossonet:ar4k-core:${project.ext.ar4kVersion}"
 	compile "net.rossonet:ar4k-terminal:${project.ext.ar4kVersion}"
 	//compile "net.rossonet:ar4k-hazelcast:${project.ext.ar4kVersion}"
