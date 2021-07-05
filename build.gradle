@@ -22,18 +22,6 @@ buildscript {
 plugins {
 	id 'com.vaadin' version '0.14.6.0'
 }
-
-vaadin {
-        optimizeBundle = true
-        pnpmEnable = true
-        productionMode = true
-}
-
-bootRun.configure {
-	mustRunAfter vaadinPrepareFrontend
-    mustRunAfter vaadinBuildFrontend
-}
-
 */
 
 description = "Template progetto con libreria EdgeAgentAr4k"
@@ -71,6 +59,19 @@ apply plugin: "nebula.rpm"
 apply plugin: 'nebula.deb'
 apply plugin: "maven-publish"
 apply plugin: 'base'
+
+/*
+vaadin {
+        optimizeBundle = true
+        pnpmEnable = true
+        productionMode = true
+}
+
+bootRun.configure {
+	mustRunAfter vaadinPrepareFrontend
+    	mustRunAfter vaadinBuildFrontend
+}
+*/
 
 dependencies {
 	compile ('com.beust:jcommander'){
