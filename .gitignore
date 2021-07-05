@@ -15,6 +15,12 @@ a.*.tmp
 *.crt
 *.key
 *.pem
+package.json
+pnpm-lock.yaml
+pnpmfile.js
+target/
+webpack.config.js
+webpack.generated.js
 
 ### OUTPUT ###
 spring-shell.log
