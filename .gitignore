@@ -21,6 +21,7 @@ pnpmfile.js
 target/
 webpack.config.js
 webpack.generated.js
+frontend
 
 ### OUTPUT ###
 spring-shell.log
